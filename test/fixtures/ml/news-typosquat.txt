@@ -1,0 +1,1 @@
+Researchers warn of wormable npm malware spreading via typosquatting campaign against lodash dependency.

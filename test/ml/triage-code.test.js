@@ -23,6 +23,7 @@ test('triageCodeContent approves benign sample', async () => {
   const findings = await triageCodeContent(benign, [], {
     mlConfig: { enabled: true },
     deepScan: false,
+    skipCache: true,
   });
 
   assert.equal(findings.length, 0);

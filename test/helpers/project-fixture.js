@@ -21,6 +21,17 @@ export async function createTempProject(prefix = 'npm-verify-test') {
     async writeFile(relativePath, content) {
       await writeRelative(relativePath, content);
     },
+    async writeNodeModule(packageName, files, packageJson = {}) {
+      const base = join('node_modules', ...packageName.split('/'));
+      for (const [fileName, content] of Object.entries(files)) {
+        await writeRelative(join(base, fileName), content);
+      }
+      await writeRelative(join(base, 'package.json'), `${JSON.stringify({
+        name: packageName,
+        version: '1.0.0',
+        ...packageJson,
+      }, null, 2)}\n`);
+    },
   };
 }
 
