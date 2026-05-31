@@ -9,6 +9,10 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhony2488/npm-verify-guard.git"
+  },
   "scripts": {
     "test": "node scripts/run-tests.mjs",
     "generate-models": "node scripts/generate-models.mjs",
