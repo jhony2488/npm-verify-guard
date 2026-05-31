@@ -3,8 +3,8 @@ import { readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { fuseLayer2Scores, buildCodeFeatureVector, normalizeVector } from '../lib/ml/features.js';
-import { tokensToVector } from '../lib/ml/tokenizer.js';
+import { fuseLayer2Scores, buildCodeFeatureVector, normalizeVector } from '../../lib/ml/features.js';
+import { tokensToVector } from '../../lib/ml/tokenizer.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -31,7 +31,7 @@ test('fuseLayer2Scores keeps benign score when tfidf is clean', () => {
 });
 
 test('buildCodeFeatureVector normalizes token counts', async () => {
-  const malicious = await readFile(join(__dirname, 'fixtures/ml/malicious-exfil.js'), 'utf8');
+  const malicious = await readFile(join(__dirname, '../fixtures/ml/malicious-exfil.js'), 'utf8');
   const vector = buildCodeFeatureVector(malicious, ['eval', 'fetch', 'process.env']);
   const sum = vector.reduce((total, value) => total + value, 0);
 
