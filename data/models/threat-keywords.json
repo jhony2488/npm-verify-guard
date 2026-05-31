@@ -1,0 +1,33 @@
+{
+  "critical": [
+    "critical vulnerability",
+    "remote code execution",
+    "rce",
+    "zero-day",
+    "zero day",
+    "actively exploited",
+    "supply chain attack",
+    "malware found",
+    "malicious package",
+    "compromised npm",
+    "credential theft",
+    "data exfiltration"
+  ],
+  "high": [
+    "cve-",
+    "exploit",
+    "vulnerability",
+    "patch immediately",
+    "security advisory",
+    "npm package",
+    "typosquat",
+    "backdoor",
+    "trojan"
+  ],
+  "medium": [
+    "security update",
+    "security fix",
+    "dependency alert",
+    "npm audit"
+  ]
+}

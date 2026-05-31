@@ -1,0 +1,22 @@
+{
+  "totalDocuments": 16,
+  "documentFrequency": {
+    "function": 4,
+    "require": 5,
+    "eval": 2,
+    "buffer.from": 2,
+    "base64": 2,
+    "child_process": 3,
+    "process.env": 5,
+    "exec": 2,
+    "secret": 1,
+    "fetch": 2,
+    "atob": 1,
+    "spawn": 1,
+    "curl": 1,
+    "api_key": 1,
+    "wget": 1,
+    "webhook": 1
+  },
+  "threshold": 2.5
+}
