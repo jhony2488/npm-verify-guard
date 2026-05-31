@@ -91,6 +91,7 @@ scripts/                # utilitários (ex.: generate-models.mjs)
 | Modelos matemáticos (Layer 2/3 fallback) | `lib/ml/`, `data/models/`, `scripts/generate-models.mjs` |
 | Classificação ONNX (Layer 3) | `lib/ml/onnx-provider.js`, `lib/ml/model-loader.js` |
 | Feeds e APIs externas | `data/default-feeds.json`, `lib/scan-external.js` |
+| Hashes de malware conhecidos | `data/malware-hashes.json`, `data/malware-sources.json`, `scripts/update-malware-hashes.mjs` |
 | Hooks e bloqueio | `lib/hooks.js`, `lib/lock.js`, `lib/cli.js` |
 | Agendamento (Windows/cron) | `lib/scheduler.js`, `lib/daemon.js` |
 | Documentação | `README.md`, este arquivo |
