@@ -10,7 +10,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "test": "node --test test/**/*.test.js",
+    "test": "node scripts/run-tests.mjs",
     "generate-models": "node scripts/generate-models.mjs",
     "update-malware-hashes": "node scripts/update-malware-hashes.mjs",
     "lint": "eslint .",
