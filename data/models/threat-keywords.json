@@ -11,7 +11,12 @@
     "malicious package",
     "compromised npm",
     "credential theft",
-    "data exfiltration"
+    "data exfiltration",
+    "wormable",
+    "postinstall script",
+    "hijacked maintainer",
+    "typosquatting campaign",
+    "env secrets stolen"
   ],
   "high": [
     "cve-",
@@ -22,12 +27,21 @@
     "npm package",
     "typosquat",
     "backdoor",
-    "trojan"
+    "trojan",
+    "npm registry",
+    "supply chain",
+    "malicious version",
+    "compromised package",
+    "openssf",
+    "github advisory"
   ],
   "medium": [
     "security update",
     "security fix",
     "dependency alert",
-    "npm audit"
+    "npm audit",
+    "dependency confusion",
+    "manifest confusion",
+    "suspicious package"
   ]
 }
