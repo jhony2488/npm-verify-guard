@@ -1,0 +1,60 @@
+{
+  "name": "npm-verify-guard",
+  "version": "1.0.0",
+  "description": "Global npm vulnerability and malware verifier with install-time blocking",
+  "type": "module",
+  "bin": {
+    "npm-verify": "./bin/npm-verify.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "generate-models": "node scripts/generate-models.mjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2"
+  },
+  "optionalDependencies": {
+    "onnxruntime-node": "^1.20.0"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^5.8.0"
+  },
+  "keywords": [
+    "npm",
+    "security",
+    "vulnerability",
+    "malware",
+    "supply-chain",
+    "cli",
+    "npm-audit",
+    "dependency-scanner",
+    "node-modules",
+    "osv",
+    "cve",
+    "rss",
+    "postinstall",
+    "npm-hooks",
+    "supply-chain-security",
+    "javascript",
+    "nodejs",
+    "verifier",
+    "scanner",
+    "typosquatting",
+    "machine-learning",
+    "onnx"
+  ],
+  "license": "MIT"
+}
