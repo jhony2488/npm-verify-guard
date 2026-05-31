@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Test / coverage
+coverage/
+.nyc_output/
+.eslintcache
+
+# Local runtime data (global install uses ~/.npm-verify)
+.npm-verify/
+
+# Optional ONNX models (downloaded to user home, not repo)
+*.onnx
+
+# Keep package-lock.json tracked for reproducible installs
+package-lock.json
