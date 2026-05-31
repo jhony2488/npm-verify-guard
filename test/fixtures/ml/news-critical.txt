@@ -1,0 +1,1 @@
+Critical vulnerability RCE in npm package lodash exploited in the wild
