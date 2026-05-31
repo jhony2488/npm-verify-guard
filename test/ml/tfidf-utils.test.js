@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { computeTf, buildDocumentFrequency, computeIdf, computeTfidfScore } from '../../lib/ml/tfidf.js';
+
+test('computeTf normalizes term counts', () => {
+  const tf = computeTf(new Map([
+    ['eval', 2],
+    ['fetch', 2],
+  ]));
+
+  assert.equal(tf.get('eval'), 0.5);
+  assert.equal(tf.get('fetch'), 0.5);
+});
+
+test('buildDocumentFrequency counts documents per term', () => {
+  const df = buildDocumentFrequency([
+    new Map([['eval', 1], ['fetch', 1]]),
+    new Map([['eval', 1]]),
+  ]);
+
+  assert.equal(df.eval, 2);
+  assert.equal(df.fetch, 1);
+});
+
+test('computeIdf gives higher weight to rare terms', () => {
+  const idf = computeIdf({ eval: 1, fetch: 2 }, 2);
+  const idfMap = idf;
+  assert.ok(idfMap.get('eval') > idfMap.get('fetch'));
+});
+
+test('computeTfidfScore returns suspicious false for empty tokens', () => {
+  const result = computeTfidfScore(new Map(), new Map(), { threshold: 1 });
+  assert.equal(result.score, 0);
+  assert.equal(result.suspicious, false);
+});
