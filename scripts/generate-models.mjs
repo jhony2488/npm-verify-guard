@@ -1,4 +1,11 @@
-import { CODE_BIGRAMS, CODE_KEYWORDS, tokenizeCode, tokenizeText, normalizeVector, tokensToVector } from '../lib/ml/tokenizer.js';
+import {
+  CODE_BIGRAMS,
+  CODE_KEYWORDS,
+  tokenizeCode,
+  tokenizeText,
+  normalizeVector,
+  tokensToVector,
+} from '../lib/ml/tokenizer.js';
 import { trainMultinomialNB } from '../lib/ml/naive-bayes.js';
 import { buildDocumentFrequency } from '../lib/ml/tfidf.js';
 import { createSeededRandom, trainSimpleMLP } from '../lib/ml/mlp.js';
