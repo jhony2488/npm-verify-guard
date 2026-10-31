@@ -6,13 +6,14 @@ Built with minimal dependencies (`fast-xml-parser` for RSS). ML layers use pure 
 
 ## ML triage layers
 
-| Layer | Method | When it runs |
-|-------|--------|--------------|
-| 1 | Regex + SHA-256 blacklist | Every scan |
-| 2 | TF-IDF + Naive Bayes (code) / MLP (news) | Every scan |
-| 3 | ONNX (CodeBERT / DistilBERT) or MLP fallback | `--deep` (daemon/scheduler) |
+| Layer | Method                                       | When it runs                |
+| ----- | -------------------------------------------- | --------------------------- |
+| 1     | Regex + SHA-256 blacklist                    | Every scan                  |
+| 2     | TF-IDF + Naive Bayes (code) / MLP (news)     | Every scan                  |
+| 2.5   | Code embedding similarity (Nomic Embed)      | Every scan (if enabled)     |
+| 3     | ONNX (CodeBERT / DistilBERT) or MLP fallback | `--deep` (daemon/scheduler) |
 
-Fallback chain: if ONNX runtime or models are unavailable, Layer 3 automatically uses the bundled MLP weights.
+Fallback chain: if ONNX runtime or models are unavailable, Layer 3 automatically uses the bundled MLP weights. Layer 2.5 gracefully degrades if the embedding model is unavailable.
 
 ```bash
 # Fast path (npm install postinstall): Layers 1 + 2
@@ -103,19 +104,21 @@ npm-verify report
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm-verify init [--force]` | Add hooks and default config to current project |
-| `npm-verify check [--blocking] [--deep]` | Run local + external verification |
-| `npm-verify models status\|download` | Check or download optional ONNX models |
-| `npm-verify check --local-only` | Scan `node_modules` only |
-| `npm-verify check --external-only` | Query OSV + RSS only |
-| `npm-verify check --all-watched` | Verify all registered projects |
-| `npm-verify gate` | Block execution if verification failed or is running |
-| `npm-verify report` | Show last report |
-| `npm-verify watch add\|remove\|list [path]` | Manage watched projects |
-| `npm-verify scheduler install\|uninstall\|status` | OS hourly scheduler |
-| `npm-verify daemon start\|stop\|status` | Background Node daemon |
+| Command                                           | Description                                          |
+| ------------------------------------------------- | ---------------------------------------------------- |
+| `npm-verify init [--force]`                       | Add hooks and default config to current project      |
+| `npm-verify check [--blocking] [--deep]`          | Run local + external verification                    |
+| `npm-verify models status\|download`              | Check or download optional ONNX models               |
+| `npm-verify models download-embeddings`           | Download code embedding model                        |
+| `npm-verify models generate-embeddings`           | Generate embeddings for malicious patterns          |
+| `npm-verify check --local-only`                   | Scan `node_modules` only                             |
+| `npm-verify check --external-only`                | Query OSV + RSS only                                 |
+| `npm-verify check --all-watched`                  | Verify all registered projects                       |
+| `npm-verify gate`                                 | Block execution if verification failed or is running |
+| `npm-verify report`                               | Show last report                                     |
+| `npm-verify watch add\|remove\|list [path]`       | Manage watched projects                              |
+| `npm-verify scheduler install\|uninstall\|status` | OS hourly scheduler                                  |
+| `npm-verify daemon start\|stop\|status`           | Background Node daemon                               |
 
 ## Exit codes
 
@@ -138,7 +141,9 @@ npm-verify report
     "layer2Threshold": 0.7,
     "layer3Threshold": 0.8,
     "deepScanOnInstall": false,
-    "useOnnx": true
+    "useOnnx": true,
+    "enableEmbeddings": true,
+    "embeddingThreshold": 0.8
   }
 }
 ```
@@ -185,6 +190,8 @@ Ensure `npm-verify` is available in cron PATH (global install recommended).
 - External scans require network access; failures degrade to local-only mode when not blocking
 - ONNX models are large and downloaded on demand to `~/.npm-verify/models/`
 - Layer 2 precision is lower than Layer 3; tune thresholds in `.npm-verify.json`
+- Code embedding model (Layer 2.5) requires optional `@agentix-e/embed-code-node` dependency
+- ML models gracefully degrade when optional dependencies are unavailable
 
 ## Tests
 

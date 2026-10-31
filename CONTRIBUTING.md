@@ -6,11 +6,11 @@ Obrigado por considerar contribuir com o **npm-verify-guard**. Este documento de
 
 Antes de começar, você precisa ter instalado:
 
-| Ferramenta | Versão mínima |
-|------------|---------------|
-| [Node.js](https://nodejs.org/) | 18.x |
-| [npm](https://www.npmjs.com/) | 9.x (incluso com Node) |
-| [Git](https://git-scm.com/) | 2.x |
+| Ferramenta                     | Versão mínima          |
+| ------------------------------ | ---------------------- |
+| [Node.js](https://nodejs.org/) | 18.x                   |
+| [npm](https://www.npmjs.com/)  | 9.x (incluso com Node) |
+| [Git](https://git-scm.com/)    | 2.x                    |
 
 Conhecimentos úteis (não obrigatórios):
 
@@ -38,14 +38,14 @@ node bin/npm-verify.js help
 
 ## Scripts do projeto
 
-| Comando | Descrição |
-|---------|-----------|
-| `npm test` | Executa a suíte de testes (`node:test`) |
-| `npm run lint` | Verifica ESLint |
-| `npm run lint:fix` | Corrige problemas automáticos do ESLint |
-| `npm run format` | Formata o código com Prettier |
-| `npm run format:check` | Valida formatação sem alterar arquivos |
-| `npm run generate-models` | Regenera pesos ML em `data/models/` |
+| Comando                   | Descrição                               |
+| ------------------------- | --------------------------------------- |
+| `npm test`                | Executa a suíte de testes (`node:test`) |
+| `npm run lint`            | Verifica ESLint                         |
+| `npm run lint:fix`        | Corrige problemas automáticos do ESLint |
+| `npm run format`          | Formata o código com Prettier           |
+| `npm run format:check`    | Valida formatação sem alterar arquivos  |
+| `npm run generate-models` | Regenera pesos ML em `data/models/`     |
 
 **Antes de abrir um PR**, todos estes comandos devem passar:
 
@@ -57,10 +57,10 @@ npm test
 
 ### Git hooks (Husky)
 
-| Hook | Ação |
-|------|------|
+| Hook         | Ação           |
+| ------------ | -------------- |
 | `pre-commit` | `npm run lint` |
-| `pre-push` | `npm test` |
+| `pre-push`   | `npm test`     |
 
 O script `prepare` configura o Husky após `npm install`. Se o `.npmrc` local tiver `ignore-scripts=true`, execute `npx husky` manualmente após clonar.
 
@@ -85,16 +85,16 @@ scripts/                # utilitários (ex.: generate-models.mjs)
 
 ## O que você pode contribuir
 
-| Área | Onde alterar |
-|------|--------------|
-| Heurísticas regex (Layer 1) | `lib/scan-local.js` |
-| Modelos matemáticos (Layer 2/3 fallback) | `lib/ml/`, `data/models/`, `scripts/generate-models.mjs` |
-| Classificação ONNX (Layer 3) | `lib/ml/onnx-provider.js`, `lib/ml/model-loader.js` |
-| Feeds e APIs externas | `data/default-feeds.json`, `lib/scan-external.js` |
-| Hashes de malware conhecidos | `data/malware-hashes.json`, `data/malware-sources.json`, `scripts/update-malware-hashes.mjs` |
-| Hooks e bloqueio | `lib/hooks.js`, `lib/lock.js`, `lib/cli.js` |
-| Agendamento (Windows/cron) | `lib/scheduler.js`, `lib/daemon.js` |
-| Documentação | `README.md`, este arquivo |
+| Área                                     | Onde alterar                                                                                 |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Heurísticas regex (Layer 1)              | `lib/scan-local.js`                                                                          |
+| Modelos matemáticos (Layer 2/3 fallback) | `lib/ml/`, `data/models/`, `scripts/generate-models.mjs`                                     |
+| Classificação ONNX (Layer 3)             | `lib/ml/onnx-provider.js`, `lib/ml/model-loader.js`                                          |
+| Feeds e APIs externas                    | `data/default-feeds.json`, `lib/scan-external.js`                                            |
+| Hashes de malware conhecidos             | `data/malware-hashes.json`, `data/malware-sources.json`, `scripts/update-malware-hashes.mjs` |
+| Hooks e bloqueio                         | `lib/hooks.js`, `lib/lock.js`, `lib/cli.js`                                                  |
+| Agendamento (Windows/cron)               | `lib/scheduler.js`, `lib/daemon.js`                                                          |
+| Documentação                             | `README.md`, este arquivo                                                                    |
 
 ### Alterações em modelos ML
 
