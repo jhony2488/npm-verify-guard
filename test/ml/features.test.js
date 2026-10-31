@@ -3,7 +3,11 @@ import { readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { fuseLayer2Scores, buildCodeFeatureVector, normalizeVector } from '../../lib/ml/features.js';
+import {
+  fuseLayer2Scores,
+  buildCodeFeatureVector,
+  normalizeVector,
+} from '../../lib/ml/features.js';
 import { tokensToVector } from '../../lib/ml/tokenizer.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

@@ -51,7 +51,11 @@ test('scanLocal detects suspicious lifecycle scripts', async () => {
 
 test('scanLocal scans scoped packages', async () => {
   const project = await createTempProject('local-scoped');
-  await project.writeFile('node_modules/@evil/scope/index.js', 'new Function("return 1")();', 'utf8');
+  await project.writeFile(
+    'node_modules/@evil/scope/index.js',
+    'new Function("return 1")();',
+    'utf8',
+  );
   await project.writeJson('package.json', { name: 'app', version: '1.0.0' });
 
   const findings = await scanLocal(project.root, {

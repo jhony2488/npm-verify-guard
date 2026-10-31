@@ -1,12 +1,20 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { computeTf, buildDocumentFrequency, computeIdf, computeTfidfScore, buildIdfMap } from '../../lib/ml/tfidf.js';
+import {
+  computeTf,
+  buildDocumentFrequency,
+  computeIdf,
+  computeTfidfScore,
+  buildIdfMap,
+} from '../../lib/ml/tfidf.js';
 
 test('computeTf normalizes term counts', () => {
-  const tf = computeTf(new Map([
-    ['eval', 2],
-    ['fetch', 2],
-  ]));
+  const tf = computeTf(
+    new Map([
+      ['eval', 2],
+      ['fetch', 2],
+    ]),
+  );
 
   assert.equal(tf.get('eval'), 0.5);
   assert.equal(tf.get('fetch'), 0.5);
@@ -14,7 +22,10 @@ test('computeTf normalizes term counts', () => {
 
 test('buildDocumentFrequency counts documents per term', () => {
   const df = buildDocumentFrequency([
-    new Map([['eval', 1], ['fetch', 1]]),
+    new Map([
+      ['eval', 1],
+      ['fetch', 1],
+    ]),
     new Map([['eval', 1]]),
   ]);
 
@@ -44,7 +55,14 @@ test('computeTfidfScore ignores unknown terms and uses max-term weighting', () =
     ['eval', 3],
     ['fetch', 2],
   ]);
-  const result = computeTfidfScore(new Map([['eval', 2], ['unknown', 5]]), idfMap, { threshold: 1.5 });
+  const result = computeTfidfScore(
+    new Map([
+      ['eval', 2],
+      ['unknown', 5],
+    ]),
+    idfMap,
+    { threshold: 1.5 },
+  );
   assert.ok(result.score > 0);
   assert.ok(result.maxTermScore > 0);
   assert.equal(result.matchedTerms, 1);

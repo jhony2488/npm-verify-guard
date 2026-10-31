@@ -24,7 +24,9 @@ test('triageCodeContent fusion escalates tfidf-only suspicion', async () => {
     deepScan: false,
   });
 
-  assert.ok(findings.some((finding) => finding.rule.includes('fusion') || finding.rule.startsWith('ml-')));
+  assert.ok(
+    findings.some((finding) => finding.rule.includes('fusion') || finding.rule.startsWith('ml-')),
+  );
 });
 
 test('classifyNewsText flags typosquat supply-chain headline', async () => {

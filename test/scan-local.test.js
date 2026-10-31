@@ -18,7 +18,11 @@ test('scanLocal flags suspicious package content', async () => {
   const packageDir = join(projectRoot, 'node_modules', 'evil-pkg');
   await mkdir(packageDir, { recursive: true });
   await writeFile(join(packageDir, 'index.js'), "eval('alert(1)');", 'utf8');
-  await writeFile(join(projectRoot, 'package.json'), '{"name":"test-app","version":"1.0.0"}', 'utf8');
+  await writeFile(
+    join(projectRoot, 'package.json'),
+    '{"name":"test-app","version":"1.0.0"}',
+    'utf8',
+  );
 
   const findings = await scanLocal(projectRoot, {
     allowPackages: [],
@@ -53,9 +57,7 @@ test('normalizeFeedItems parses rss channel items', () => {
 });
 
 test('shouldBlock respects project config', () => {
-  const report = buildReport([
-    { severity: 'medium', blocking: false },
-  ]);
+  const report = buildReport([{ severity: 'medium', blocking: false }]);
 
   assert.equal(shouldBlock(report, { blockOnMedium: false, blockOnHigh: true }), false);
   assert.equal(shouldBlock(report, { blockOnMedium: true, blockOnHigh: true }), true);

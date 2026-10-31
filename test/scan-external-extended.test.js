@@ -22,7 +22,13 @@ test('scanExternal uses package-lock dependencies for OSV lookup', async () => {
       return {
         ok: true,
         json: async () => ({
-          vulns: [{ id: 'CVE-2024-9999', summary: 'critical remote code execution', severity: [{ score: '9.8' }] }],
+          vulns: [
+            {
+              id: 'CVE-2024-9999',
+              summary: 'critical remote code execution',
+              severity: [{ score: '9.8' }],
+            },
+          ],
         }),
       };
     }

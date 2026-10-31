@@ -20,7 +20,9 @@ test('scanExternal maps OSV medium severity correctly', async () => {
       return {
         ok: true,
         json: async () => ({
-          vulns: [{ id: 'CVE-MED', summary: 'moderate issue', severity: [{ score: 'MEDIUM 5.5' }] }],
+          vulns: [
+            { id: 'CVE-MED', summary: 'moderate issue', severity: [{ score: 'MEDIUM 5.5' }] },
+          ],
         }),
       };
     }
@@ -88,11 +90,7 @@ test('scanExternal skips external scan when disabled in config', async () => {
     return { ok: true, json: async () => ({ vulns: [] }) };
   };
 
-  const findings = await scanExternal(
-    project.root,
-    { external: { enabled: false } },
-    { fetchFn },
-  );
+  const findings = await scanExternal(project.root, { external: { enabled: false } }, { fetchFn });
 
   assert.equal(findings.length, 0);
   assert.equal(fetchCalled, false);

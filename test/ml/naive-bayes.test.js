@@ -9,7 +9,9 @@ import { classifyMultinomialNB } from '../../lib/ml/naive-bayes.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('Naive Bayes classifies malicious code with high probability', async () => {
-  const model = JSON.parse(await readFile(join(__dirname, '../../data/models/code-nb-model.json'), 'utf8'));
+  const model = JSON.parse(
+    await readFile(join(__dirname, '../../data/models/code-nb-model.json'), 'utf8'),
+  );
   const malicious = await readFile(join(__dirname, '../fixtures/ml/malicious-exfil.js'), 'utf8');
   const benign = await readFile(join(__dirname, '../fixtures/ml/benign-date-validator.js'), 'utf8');
 

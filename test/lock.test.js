@@ -1,13 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {
-  readStatus,
-  setFailed,
-  setOk,
-  setRunning,
-  writeStatus,
-  isStale,
-} from '../lib/lock.js';
+import { readStatus, setFailed, setOk, setRunning, writeStatus, isStale } from '../lib/lock.js';
 import { buildReport } from '../lib/report.js';
 import { createTempProject } from './helpers/project-fixture.js';
 

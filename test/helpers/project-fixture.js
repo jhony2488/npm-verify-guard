@@ -26,11 +26,18 @@ export async function createTempProject(prefix = 'npm-verify-test') {
       for (const [fileName, content] of Object.entries(files)) {
         await writeRelative(join(base, fileName), content);
       }
-      await writeRelative(join(base, 'package.json'), `${JSON.stringify({
-        name: packageName,
-        version: '1.0.0',
-        ...packageJson,
-      }, null, 2)}\n`);
+      await writeRelative(
+        join(base, 'package.json'),
+        `${JSON.stringify(
+          {
+            name: packageName,
+            version: '1.0.0',
+            ...packageJson,
+          },
+          null,
+          2,
+        )}\n`,
+      );
     },
   };
 }

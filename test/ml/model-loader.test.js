@@ -16,7 +16,13 @@ test('naive bayes training produces classifiable model', () => {
   const vocabulary = ['eval', 'fetch'];
   const samples = [
     { label: 'benign', tokens: new Map([['fetch', 1]]) },
-    { label: 'malicious', tokens: new Map([['eval', 2], ['fetch', 1]]) },
+    {
+      label: 'malicious',
+      tokens: new Map([
+        ['eval', 2],
+        ['fetch', 1],
+      ]),
+    },
   ];
   const model = trainMultinomialNB(samples, vocabulary);
   const malicious = classifyMultinomialNB(new Map([['eval', 2]]), model);

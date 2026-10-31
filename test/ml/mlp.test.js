@@ -14,8 +14,12 @@ test('sigmoid returns values between 0 and 1', () => {
 });
 
 test('MLP scores critical news higher than opinion piece', async () => {
-  const model = JSON.parse(await readFile(join(__dirname, '../../data/models/news-mlp-model.json'), 'utf8'));
-  const keywords = JSON.parse(await readFile(join(__dirname, '../../data/models/threat-keywords.json'), 'utf8'));
+  const model = JSON.parse(
+    await readFile(join(__dirname, '../../data/models/news-mlp-model.json'), 'utf8'),
+  );
+  const keywords = JSON.parse(
+    await readFile(join(__dirname, '../../data/models/threat-keywords.json'), 'utf8'),
+  );
   const critical = await readFile(join(__dirname, '../fixtures/ml/news-critical.txt'), 'utf8');
   const opinion = await readFile(join(__dirname, '../fixtures/ml/news-opinion.txt'), 'utf8');
 
