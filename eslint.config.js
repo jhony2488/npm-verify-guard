@@ -4,7 +4,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['node_modules/**', 'data/models/**', 'coverage/**'],
+    ignores: ['node_modules/**', 'data/models/**', 'coverage/**', '.planning/**'],
   },
   js.configs.recommended,
   eslintConfigPrettier,

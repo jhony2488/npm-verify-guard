@@ -110,7 +110,6 @@ test('Layer 2.5 falls back to Layer 3 when embedding fails', async () => {
   });
 
   // Should still run Layer 3 even if embedding fails
-  const layer3Finding = findings.find((f) => f.mlLayer === 3);
   // Layer 3 might or might not trigger depending on the code
   // The important thing is that it doesn't crash
   assert.ok(Array.isArray(findings));

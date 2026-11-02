@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -28,12 +28,9 @@ test('compareWithMaliciousPatterns returns zero similarity when embedder not ava
 
 test('embedCode throws error when embedder not available', async () => {
   const { embedCode } = await import('../../lib/ml/code-embedder.js');
-  await assert.rejects(
-    async () => {
-      await embedCode('const x = 1;');
-    },
-    /Embedding model not available/,
-  );
+  await assert.rejects(async () => {
+    await embedCode('const x = 1;');
+  }, /Embedding model not available/);
 });
 
 test('loadPatternEmbeddings handles missing pattern file', async () => {

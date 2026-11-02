@@ -34,7 +34,8 @@
   },
   "optionalDependencies": {
     "onnxruntime-node": "^1.20.0",
-    "@agentix-e/embed-code-node": "^1.0.0"
+    "@agentix-e/embed-code-node": "^1.0.0",
+    "node-llama-cpp": "^3.20.0"
   },
   "dependencies": {
     "fast-xml-parser": "^5.8.0"
@@ -90,7 +91,14 @@
     "npm-verify",
     "npm-guard",
     "lockfile",
-    "package-lock"
+    "package-lock",
+    "llm",
+    "local-llm",
+    "llama-cpp",
+    "ai-security",
+    "sensitive-data-detection",
+    "api-key-detection",
+    "crypto-detection"
   ],
   "license": "MIT"
 }
