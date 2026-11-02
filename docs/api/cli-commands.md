@@ -268,6 +268,50 @@ npm-verify daemon status
 
 ---
 
+#### `npm-verify llm status|download|configure`
+
+Manage local LLM integration for Layer 4 deep analysis.
+
+**Subcommands:**
+
+**status:** Check LLM provider availability and configuration
+
+```bash
+npm-verify llm status
+```
+
+Output:
+
+- node-llama-cpp availability
+- OpenAI-compatible provider status
+- Models directory location
+- Configured provider
+
+**download:** Download LLM model from URL
+
+```bash
+npm-verify llm download [model-url]
+```
+
+- Downloads model to `~/.npm-verify/llm-models/`
+- Model URL is optional (can specify in config)
+- Supports .gguf and other llama.cpp formats
+
+**configure:** Configure LLM provider settings
+
+```bash
+npm-verify llm configure --provider auto --api-url http://localhost:11434 --model llama3
+```
+
+Options:
+
+- `--provider`: Provider type (auto, node-llama-cpp, openai-compatible)
+- `--api-url`: OpenAI-compatible API URL
+- `--api-key`: API key for OpenAI-compatible service
+- `--model`: Model name (e.g., llama3, phi-3-mini)
+
+---
+
 #### `npm-verify version` / `npm-verify --version` / `npm-verify -V`
 
 Display npm-verify-guard version.
@@ -557,6 +601,50 @@ npm-verify daemon stop
 ```bash
 npm-verify daemon status
 ```
+
+---
+
+#### `npm-verify llm status|download|configure`
+
+Gerencia integração LLM local para análise profunda da Camada 4.
+
+**Subcomandos:**
+
+**status:** Verifica disponibilidade e configuração do provider LLM
+
+```bash
+npm-verify llm status
+```
+
+Saída:
+
+- Disponibilidade de node-llama-cpp
+- Status de provider OpenAI-compatible
+- Localização do diretório de modelos
+- Provider configurado
+
+**download:** Baixa modelo LLM de URL
+
+```bash
+npm-verify llm download [model-url]
+```
+
+- Baixa modelo para `~/.npm-verify/llm-models/`
+- URL do modelo é opcional (pode especificar na config)
+- Suporta formatos .gguf e outros do llama.cpp
+
+**configure:** Configura configurações do provider LLM
+
+```bash
+npm-verify llm configure --provider auto --api-url http://localhost:11434 --model llama3
+```
+
+Opções:
+
+- `--provider`: Tipo de provider (auto, node-llama-cpp, openai-compatible)
+- `--api-url`: URL de API OpenAI-compatible
+- `--api-key`: Chave de API para serviço OpenAI-compatible
+- `--model`: Nome do modelo (ex: llama3, phi-3-mini)
 
 ---
 

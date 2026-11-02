@@ -31,6 +31,9 @@ The project configuration file (`.npm-verify.json`) is created automatically whe
   },
   "blockOnMedium": false,
   "blockOnHigh": true,
+  "sensitiveData": {
+    "enabled": true
+  },
   "ml": {
     "enabled": true,
     "layer2Threshold": 0.7,
@@ -41,7 +44,18 @@ The project configuration file (`.npm-verify.json`) is created automatically whe
     "newsLayer3Threshold": 0.8,
     "deepScanOnInstall": false,
     "useOnnx": true,
-    "blockOnMedium": false
+    "blockOnMedium": false,
+    "enableEmbeddings": true,
+    "embeddingThreshold": 0.8,
+    "enableLlm": false,
+    "llm": {
+      "provider": "auto",
+      "modelPath": null,
+      "openaiApiUrl": null,
+      "openaiApiKey": null,
+      "openaiModel": "llama3",
+      "enableSensitiveData": true
+    }
   }
 }
 ```
@@ -138,6 +152,61 @@ The project configuration file (`.npm-verify.json`) is created automatically whe
 - Overrides global `blockOnMedium` for ML specifically
 - Default: false
 
+**`ml.enableEmbeddings` (boolean)**
+
+- Enable Layer 2.5 code embedding similarity check
+- Requires `@agentix-e/embed-code-node` optional dependency
+- Default: true
+
+**`ml.embeddingThreshold` (number)**
+
+- Threshold for embedding similarity to trigger high severity
+- Range: 0-1, higher = less sensitive
+- Default: 0.8
+
+**`ml.enableLlm` (boolean)**
+
+- Enable Layer 4 local LLM analysis
+- Only runs with `--deep` flag
+- Default: false
+
+**`ml.llm.provider` (string)**
+
+- LLM provider to use: `auto`, `node-llama-cpp`, or `openai-compatible`
+- Default: `auto`
+
+**`ml.llm.modelPath` (string or null)**
+
+- Path to LLM model file (for node-llama-cpp)
+- Default: null (uses `~/.npm-verify/llm-models/model.gguf`)
+
+**`ml.llm.openaiApiUrl` (string or null)**
+
+- URL for OpenAI-compatible API endpoint
+- Default: null
+
+**`ml.llm.openaiApiKey` (string or null)**
+
+- API key for OpenAI-compatible service
+- Default: null
+
+**`ml.llm.openaiModel` (string)**
+
+- Model name for OpenAI-compatible service
+- Default: `llama3`
+
+**`ml.llm.enableSensitiveData` (boolean)**
+
+- Enable LLM-based sensitive data detection
+- Runs in addition to regex-based Layer 1.5 detection
+- Default: true
+
+**`sensitiveData.enabled` (boolean)**
+
+- Enable Layer 1.5 sensitive data detection via regex
+- Detects crypto addresses, API keys, passwords, etc.
+- Default: true
+
 ### Global Configuration
 
 The global configuration file (`~/.npm-verify/config.json`) manages settings across all projects.
@@ -233,6 +302,21 @@ The global configuration file (`~/.npm-verify/config.json`) manages settings acr
 }
 ```
 
+#### LLM-Enabled Deep Scan
+
+```json
+{
+  "ml": {
+    "enableLlm": true,
+    "llm": {
+      "provider": "node-llama-cpp",
+      "modelPath": "~/.npm-verify/llm-models/phi-3-mini.gguf",
+      "enableSensitiveData": true
+    }
+  }
+}
+```
+
 ### Threshold Tuning Guide
 
 **ML Thresholds:**
@@ -288,6 +372,9 @@ O arquivo de configuração de projeto (`.npm-verify.json`) é criado automatica
   },
   "blockOnMedium": false,
   "blockOnHigh": true,
+  "sensitiveData": {
+    "enabled": true
+  },
   "ml": {
     "enabled": true,
     "layer2Threshold": 0.7,
@@ -298,7 +385,18 @@ O arquivo de configuração de projeto (`.npm-verify.json`) é criado automatica
     "newsLayer3Threshold": 0.8,
     "deepScanOnInstall": false,
     "useOnnx": true,
-    "blockOnMedium": false
+    "blockOnMedium": false,
+    "enableEmbeddings": true,
+    "embeddingThreshold": 0.8,
+    "enableLlm": false,
+    "llm": {
+      "provider": "auto",
+      "modelPath": null,
+      "openaiApiUrl": null,
+      "openaiApiKey": null,
+      "openaiModel": "llama3",
+      "enableSensitiveData": true
+    }
   }
 }
 ```
@@ -395,6 +493,55 @@ O arquivo de configuração de projeto (`.npm-verify.json`) é criado automatica
 - Sobrescreve `blockOnMedium` global especificamente para ML
 - Padrão: false
 
+**`ml.enableEmbeddings` (boolean)**
+
+- Habilitar verificação de similaridade de embeddings de código (Camada 2.5)
+- Requer dependência opcional `@agentix-e/embed-code-node`
+- Padrão: true
+
+**`ml.embeddingThreshold` (number)**
+
+- Threshold de similaridade de embedding para acionar severidade alta
+- Faixa: 0-1, mais alto = menos sensível
+- Padrão: 0.8
+
+**`ml.enableLlm` (boolean)**
+
+- Habilitar análise LLM local (Camada 4)
+- Executa apenas com flag `--deep`
+- Padrão: false
+
+**`ml.llm.provider` (string)**
+
+- Provider LLM para usar: `auto`, `node-llama-cpp`, ou `openai-compatible`
+- Padrão: `auto`
+
+**`ml.llm.modelPath` (string ou null)**
+
+- Caminho para arquivo de modelo LLM (para node-llama-cpp)
+- Padrão: null (usa `~/.npm-verify/llm-models/model.gguf`)
+
+**`ml.llm.openaiApiUrl` (string ou null)**
+
+- URL para endpoint de API OpenAI-compatible
+- Padrão: null
+
+**`ml.llm.openaiApiKey` (string ou null)**
+
+- Chave de API para serviço OpenAI-compatible
+- Padrão: null
+
+**`ml.llm.openaiModel` (string)**
+
+- Nome do modelo para serviço OpenAI-compatible
+- Padrão: `llama3`
+
+**`ml.llm.enableSensitiveData` (boolean)**
+
+- Habilitar detecção de dados sensíveis baseada em LLM
+- Executa adicionalmente à detecção baseada em regex da Camada 1.5
+- Padrão: true
+
 ### Configuração Global
 
 O arquivo de configuração global (`~/.npm-verify/config.json`) gerencia configurações através de todos os projetos.
@@ -486,6 +633,21 @@ O arquivo de configuração global (`~/.npm-verify/config.json`) gerencia config
   "ml": {
     "useOnnx": false,
     "deepScanOnInstall": false
+  }
+}
+```
+
+#### LLM-Enabled Deep Scan
+
+```json
+{
+  "ml": {
+    "enableLlm": true,
+    "llm": {
+      "provider": "node-llama-cpp",
+      "modelPath": "~/.npm-verify/llm-models/phi-3-mini.gguf",
+      "enableSensitiveData": true
+    }
   }
 }
 ```

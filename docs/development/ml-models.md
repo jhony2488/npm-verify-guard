@@ -8,12 +8,14 @@ Understanding and managing the machine learning models in npm-verify-guard.
 
 ### Overview
 
-npm-verify-guard uses a 4-layer ML triage system:
+npm-verify-guard uses a 5-layer ML triage system:
 
 - **Layer 1**: Regex + SHA-256 blacklist (heuristics, not ML)
+- **Layer 1.5**: Sensitive data detection via regex (crypto, API keys, passwords) - pattern matching
 - **Layer 2**: TF-IDF + Naive Bayes (code) / MLP (news) - pure JavaScript
 - **Layer 2.5**: Code embedding similarity (Nomic Embed) - semantic pattern matching
 - **Layer 3**: ONNX CodeBERT/DistilBERT or MLP fallback - deep learning
+- **Layer 4**: Local LLM analysis (node-llama-cpp or OpenAI-compatible) - semantic understanding
 
 ### Model Types
 
@@ -95,6 +97,33 @@ npm-verify-guard uses a 4-layer ML triage system:
 
 **Fallback**: Automatically uses bundled MLP if ONNX unavailable
 
+#### Local LLM (Layer 4 - Code)
+
+**Purpose**: Advanced semantic analysis for code security and sensitive data detection
+
+**Implementation**: Multi-provider support
+
+- node-llama-cpp (direct llama.cpp binding)
+- OpenAI-compatible API (Ollama, vLLM, LocalAI, etc.)
+
+**Model Source**: User-configurable, downloaded on-demand
+
+- node-llama-cpp: models in `~/.npm-verify/llm-models/`
+- OpenAI-compatible: managed by external service
+
+**Model Location**: `~/.npm-verify/llm-models/` (for node-llama-cpp)
+
+**Performance**: Slowest (2-10s per file)
+
+**Use Case**: Deep scan with `--deep` flag and `ml.enableLlm: true` (Layer 4)
+
+**Fallback**: Automatically skipped if LLM unavailable
+
+**Analysis Types**:
+
+- Code security analysis (malicious patterns, exfiltration)
+- Sensitive data detection (API keys, passwords, crypto addresses)
+
 ### Training Data
 
 #### Location
@@ -136,6 +165,53 @@ npm-verify-guard uses a 4-layer ML triage system:
 2. Add samples to appropriate section (`code` or `news`)
 3. Ensure balanced distribution of labels
 4. Run model generation
+
+### Local LLM Configuration
+
+**Provider Selection**:
+
+Configure in `.npm-verify.json` or `~/.npm-verify/config.json`:
+
+```json
+{
+  "ml": {
+    "enableLlm": true,
+    "llm": {
+      "provider": "auto",
+      "modelPath": null,
+      "openaiApiUrl": null,
+      "openaiApiKey": null,
+      "openaiModel": "llama3",
+      "enableSensitiveData": true
+    }
+  }
+}
+```
+
+**Provider Options**:
+
+- `auto`: Try node-llama-cpp first, fall back to OpenAI-compatible
+- `node-llama-cpp`: Use llama.cpp binding directly
+- `openai-compatible`: Use OpenAI-compatible API service
+
+**Model Recommendations**:
+
+- Small (1-3B params): Fastest, ~1-2GB (e.g., Phi-3-mini, TinyLlama)
+- Medium (7-8B params): Balanced, ~4-5GB (e.g., Llama-3.1-8B, Mistral-7B)
+- Large (13B+ params): Most accurate, ~8GB+ (not recommended for automated scanning)
+
+**Checking LLM Status**:
+
+```bash
+npm-verify llm status
+```
+
+Output:
+
+- node-llama-cpp availability
+- OpenAI-compatible provider status
+- Models directory location
+- Configured provider
 
 ### Generating Models
 
@@ -228,6 +304,7 @@ The tool will automatically fallback to bundled MLP models.
 | CodeBERT    | ~95%     | ~5%                 | 1-5s      |
 | MLP (News)  | ~85%     | ~15%                | 100-500ms |
 | DistilBERT  | ~92%     | ~8%                 | 1-5s      |
+| Local LLM   | ~97%     | ~3%                 | 2-10s     |
 
 #### Threshold Tuning
 
@@ -344,11 +421,14 @@ Adjust:
 
 ### Visão Geral
 
-npm-verify-guard usa um sistema de triagem ML de 3 camadas:
+npm-verify-guard usa um sistema de triagem ML de 5 camadas:
 
 - **Camada 1**: Regex + blacklist SHA-256 (heurísticas, não ML)
+- **Camada 1.5**: Detecção de dados sensíveis via regex (crypto, chaves API, senhas) - padrões
 - **Camada 2**: TF-IDF + Naive Bayes (código) / MLP (notícias) - JavaScript puro
+- **Camada 2.5**: Similaridade de embeddings de código (Nomic Embed) - padrões semânticos
 - **Camada 3**: ONNX CodeBERT/DistilBERT ou fallback MLP - deep learning
+- **Camada 4**: Análise LLM local (node-llama-cpp ou OpenAI-compatible) - entendimento semântico
 
 ### Tipos de Modelo
 
@@ -412,6 +492,33 @@ npm-verify-guard usa um sistema de triagem ML de 3 camadas:
 
 **Fallback**: Usa automaticamente MLP bundled se ONNX indisponível
 
+#### LLM Local (Camada 4 - Código)
+
+**Propósito**: Análise semântica avançada para segurança de código e detecção de dados sensíveis
+
+**Implementação**: Suporte multi-provider
+
+- node-llama-cpp (binding direto do llama.cpp)
+- API OpenAI-compatible (Ollama, vLLM, LocalAI, etc.)
+
+**Fonte do Modelo**: Configurável pelo usuário, baixado sob demanda
+
+- node-llama-cpp: modelos em `~/.npm-verify/llm-models/`
+- OpenAI-compatible: gerenciado por serviço externo
+
+**Localização do Modelo**: `~/.npm-verify/llm-models/` (para node-llama-cpp)
+
+**Performance**: Mais lento (2-10s por arquivo)
+
+**Caso de Uso**: Varredura profunda com flag `--deep` e `ml.enableLlm: true` (Camada 4)
+
+**Fallback**: Automaticamente pulado se LLM indisponível
+
+**Tipos de Análise**:
+
+- Análise de segurança de código (padrões maliciosos, exfiltração)
+- Detecção de dados sensíveis (chaves API, senhas, endereços crypto)
+
 ### Dados de Treino
 
 #### Localização
@@ -453,6 +560,53 @@ npm-verify-guard usa um sistema de triagem ML de 3 camadas:
 2. Adicione amostras à seção apropriada (`code` ou `news`)
 3. Certifique-se de distribuição balanceada de labels
 4. Execute geração de modelo
+
+### Configuração LLM Local
+
+**Seleção de Provider**:
+
+Configure em `.npm-verify.json` ou `~/.npm-verify/config.json`:
+
+```json
+{
+  "ml": {
+    "enableLlm": true,
+    "llm": {
+      "provider": "auto",
+      "modelPath": null,
+      "openaiApiUrl": null,
+      "openaiApiKey": null,
+      "openaiModel": "llama3",
+      "enableSensitiveData": true
+    }
+  }
+}
+```
+
+**Opções de Provider**:
+
+- `auto`: Tenta node-llama-cpp primeiro, fallback para OpenAI-compatible
+- `node-llama-cpp`: Usa binding do llama.cpp diretamente
+- `openai-compatible`: Usa serviço de API OpenAI-compatible
+
+**Recomendações de Modelo**:
+
+- Pequeno (1-3B params): Mais rápido, ~1-2GB (ex: Phi-3-mini, TinyLlama)
+- Médio (7-8B params): Balanceado, ~4-5GB (ex: Llama-3.1-8B, Mistral-7B)
+- Grande (13B+ params): Mais preciso, ~8GB+ (não recomendado para varredura automatizada)
+
+**Verificando Status LLM**:
+
+```bash
+npm-verify llm status
+```
+
+Saída:
+
+- Disponibilidade de node-llama-cpp
+- Status de provider OpenAI-compatible
+- Localização do diretório de modelos
+- Provider configurado
 
 ### Gerando Modelos
 
@@ -530,6 +684,7 @@ A ferramenta fará fallback automaticamente para modelos ML bundled.
 | CodeBERT       | ~95%     | ~5%                    | 1-5s       |
 | MLP (Notícias) | ~85%     | ~15%                   | 100-500ms  |
 | DistilBERT     | ~92%     | ~8%                    | 1-5s       |
+| LLM Local      | ~97%     | ~3%                    | 2-10s      |
 
 #### Ajuste de Threshold
 

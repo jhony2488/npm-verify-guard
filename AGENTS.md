@@ -8,11 +8,14 @@ Instructions for AI coding agents working on npm-verify-guard.
 
 ### Project Overview
 
-npm-verify-guard is a global CLI tool that verifies npm dependencies for known vulnerabilities, supply-chain news, and suspicious code patterns in `node_modules`. It uses a 3-layer ML triage system:
+npm-verify-guard is a global CLI tool that verifies npm dependencies for known vulnerabilities, supply-chain news, and suspicious code patterns in `node_modules`. It uses a 4-layer ML triage system:
 
 - **Layer 1**: Regex + SHA-256 blacklist (every scan)
+- **Layer 1.5**: Sensitive data detection via regex (crypto, API keys, passwords) (every scan)
 - **Layer 2**: TF-IDF + Naive Bayes (code) / MLP (news) (every scan)
+- **Layer 2.5**: Code embedding similarity (Nomic Embed) (every scan if enabled)
 - **Layer 3**: ONNX (CodeBERT / DistilBERT) or MLP fallback (deep scan)
+- **Layer 4**: Local LLM analysis (node-llama-cpp or OpenAI-compatible) (deep scan only)
 
 ### Build and Test Commands
 
@@ -59,7 +62,7 @@ bin/npm-verify.js       # CLI entrypoint
 lib/                    # Core logic
   cli.js               # Command parser and routing
   config.js            # Configuration loading
-  scan-local.js        # Local node_modules scanning (Layer 1 + ML)
+  scan-local.js        # Local node_modules scanning (Layer 1 + 1.5 + ML)
   scan-external.js     # OSV API + RSS feeds (Layer 2 + ML)
   hooks.js             # npm lifecycle hooks management
   lock.js              # Status file management
@@ -72,10 +75,13 @@ lib/                    # Core logic
     tfidf.js           # TF-IDF vectorization
     naive-bayes.js     # Naive Bayes classifier
     mlp.js             # Multi-layer perceptron
-    triage-code.js     # Code content triage
+    triage-code.js     # Code content triage (Layers 1-4)
     triage-news.js     # News item triage
     onnx-provider.js   # ONNX runtime integration
     model-loader.js    # Model download/management
+    llm-analyzer.js    # Local LLM integration (Layer 4)
+    code-embedder.js   # Code embedding similarity (Layer 2.5)
+    features.js        # Feature vector building
 data/                   # Bundled data
   default-feeds.json   # RSS feed URLs and OSV API
   malware-hashes.json # Known malware SHA-256 hashes
@@ -144,11 +150,14 @@ scripts/                # Utility scripts
 
 ### Visão Geral do Projeto
 
-npm-verify-guard é uma ferramenta CLI global que verifica dependências npm em busca de vulnerabilidades conhecidas, notícias de supply chain e padrões de código suspeitos em `node_modules`. Usa um sistema de triagem ML de 3 camadas:
+npm-verify-guard é uma ferramenta CLI global que verifica dependências npm em busca de vulnerabilidades conhecidas, notícias de supply chain e padrões de código suspeitos em `node_modules`. Usa um sistema de triagem ML de 4 camadas:
 
 - **Camada 1**: Regex + blacklist SHA-256 (toda varredura)
+- **Camada 1.5**: Detecção de dados sensíveis via regex (crypto, chaves API, senhas) (toda varredura)
 - **Camada 2**: TF-IDF + Naive Bayes (código) / MLP (notícias) (toda varredura)
+- **Camada 2.5**: Similaridade de embeddings de código (Nomic Embed) (toda varredura se habilitado)
 - **Camada 3**: ONNX (CodeBERT / DistilBERT) ou fallback MLP (varredura profunda)
+- **Camada 4**: Análise LLM local (node-llama-cpp ou OpenAI-compatible) (apenas varredura profunda)
 
 ### Comandos de Build e Teste
 
@@ -195,7 +204,7 @@ bin/npm-verify.js       # Entrypoint CLI
 lib/                    # Lógica principal
   cli.js               # Parser de comandos e roteamento
   config.js            # Carregamento de configuração
-  scan-local.js        # Varredura local de node_modules (Camada 1 + ML)
+  scan-local.js        # Varredura local de node_modules (Camada 1 + 1.5 + ML)
   scan-external.js     # API OSV + feeds RSS (Camada 2 + ML)
   hooks.js             # Gerenciamento de hooks de ciclo de vida npm
   lock.js              # Gerenciamento de arquivo de status
@@ -208,10 +217,13 @@ lib/                    # Lógica principal
     tfidf.js           # Vetorização TF-IDF
     naive-bayes.js     # Classificador Naive Bayes
     mlp.js             # Perceptron multicamadas
-    triage-code.js     # Triagem de conteúdo de código
+    triage-code.js     # Triagem de conteúdo de código (Camadas 1-4)
     triage-news.js     # Triagem de itens de notícias
     onnx-provider.js   # Integração ONNX runtime
     model-loader.js    # Download/gerenciamento de modelos
+    llm-analyzer.js    # Integração LLM local (Camada 4)
+    code-embedder.js   # Similaridade de embeddings de código (Camada 2.5)
+    features.js        # Construção de vetores de features
 data/                   # Dados bundled
   default-feeds.json   # URLs de feeds RSS e API OSV
   malware-hashes.json # Hashes SHA-256 de malware conhecido

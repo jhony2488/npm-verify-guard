@@ -86,6 +86,21 @@ Analyzes code content using ML triage layers.
 - `ml-onnx-codebert`: ONNX CodeBERT classification
 - `ml-mlp`: Bundled MLP fallback
 
+**Layer 4 (Optional LLM Analysis):**
+
+If `deepScan: true` and `mlConfig.enableLlm: true`:
+
+- Use local LLM (node-llama-cpp or OpenAI-compatible) for semantic analysis
+- Analyze code for security vulnerabilities and malicious behavior
+- Detect sensitive data leakage (API keys, passwords, crypto addresses)
+- Generate human-readable explanations
+- Provide confidence scores with reasoning
+
+**Layer 4 Rules:**
+
+- `llm-code-analysis`: LLM-based code security analysis
+- `llm-sensitive-data`: LLM-based sensitive data detection
+
 **Example:**
 
 ```javascript
@@ -245,7 +260,16 @@ const findings = await triageNewsItems(newsItems, dependencies, {
     "useOnnx": true,
     "blockOnMedium": false,
     "enableEmbeddings": true,
-    "embeddingThreshold": 0.8
+    "embeddingThreshold": 0.8,
+    "enableLlm": false,
+    "llm": {
+      "provider": "auto",
+      "modelPath": null,
+      "openaiApiUrl": null,
+      "openaiApiKey": null,
+      "openaiModel": "llama3",
+      "enableSensitiveData": true
+    }
   }
 }
 ```
@@ -294,9 +318,21 @@ npm-verify models download-embeddings
 npm-verify models generate-embeddings
 ```
 
-**Models Directory:** `~/.npm-verify/models/`
+**Check LLM Status:**
 
-**Fallback:** If ONNX runtime unavailable, automatically uses bundled MLP weights. If embedding model unavailable, Layer 2.5 is skipped gracefully.
+```bash
+npm-verify llm status
+```
+
+**Configure LLM:**
+
+```bash
+npm-verify llm configure --provider openai-compatible --api-url http://localhost:11434 --model llama3
+```
+
+**Models Directory:** `~/.npm-verify/models/` (ONNX), `~/.npm-verify/llm-models/` (LLM)
+
+**Fallback:** If ONNX runtime unavailable, automatically uses bundled MLP weights. If embedding model unavailable, Layer 2.5 is skipped gracefully. If LLM unavailable, Layer 4 is skipped gracefully.
 
 ---
 
@@ -381,6 +417,21 @@ Analisa conteúdo de código usando camadas de triagem ML.
 
 - `ml-onnx-codebert`: Classificação ONNX CodeBERT
 - `ml-mlp`: Fallback MLP bundled
+
+**Camada 4 (Análise LLM Opcional):**
+
+Se `deepScan: true` e `mlConfig.enableLlm: true`:
+
+- Usa LLM local (node-llama-cpp ou OpenAI-compatible) para análise semântica
+- Analisa código por vulnerabilidades de segurança e comportamento malicioso
+- Detecta vazamento de dados sensíveis (chaves API, senhas, endereços crypto)
+- Gera explicações legíveis por humanos
+- Fornece scores de confiança com raciocínio
+
+**Regras da Camada 4:**
+
+- `llm-code-analysis`: Análise de segurança de código baseada em LLM
+- `llm-sensitive-data`: Detecção de dados sensíveis baseada em LLM
 
 **Exemplo:**
 
@@ -541,7 +592,16 @@ const findings = await triageNewsItems(newsItems, dependencies, {
     "useOnnx": true,
     "blockOnMedium": false,
     "enableEmbeddings": true,
-    "embeddingThreshold": 0.8
+    "embeddingThreshold": 0.8,
+    "enableLlm": false,
+    "llm": {
+      "provider": "auto",
+      "modelPath": null,
+      "openaiApiUrl": null,
+      "openaiApiKey": null,
+      "openaiModel": "llama3",
+      "enableSensitiveData": true
+    }
   }
 }
 ```
@@ -590,6 +650,18 @@ npm-verify models download-embeddings
 npm-verify models generate-embeddings
 ```
 
-**Diretório de Modelos:** `~/.npm-verify/models/`
+**Verificar Status LLM:**
 
-**Fallback:** Se runtime ONNX indisponível, usa automaticamente pesos MLP bundled. Se modelo de embedding indisponível, Camada 2.5 é pulada graciosamente.
+```bash
+npm-verify llm status
+```
+
+**Configurar LLM:**
+
+```bash
+npm-verify llm configure --provider openai-compatible --api-url http://localhost:11434 --model llama3
+```
+
+**Diretório de Modelos:** `~/.npm-verify/models/` (ONNX), `~/.npm-verify/llm-models/` (LLM)
+
+**Fallback:** Se runtime ONNX indisponível, usa automaticamente pesos MLP bundled. Se modelo de embedding indisponível, Camada 2.5 é pulada graciosamente. Se LLM indisponível, Camada 4 é pulada graciosamente.
